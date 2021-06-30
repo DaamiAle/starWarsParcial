@@ -1,3 +1,68 @@
 import habitantes.*
 import planeta.*
 
+test "TestEscenarioBasico"{
+	
+	const julieta 	= new Habitante(edad=42)
+	const ana 		= new Atleta(edad=25)
+	const rosa 		= new Atleta(edad=45,tecnicasAprendidas=8)
+	const perla 	= new Atleta(edad=28,tecnicasAprendidas=4,masaMuscular=6)
+	const monica 	= new Docente(edad=45,cursosImpartidos=6)
+	const luisa 	= new Docente(edad=35,cursosImpartidos=1)
+	
+	assert.that(not julieta.esDestacada()	and julieta.potencia().equals(20) 	and julieta.inteligencia().equals(8))
+	assert.that(ana.esDestacada() 			and ana.potencia().equals(28) 		and ana.inteligencia().equals(12)	)
+	assert.that(rosa.esDestacada() 			and rosa.potencia().equals(52) 		and rosa.inteligencia().equals(8)	)
+	assert.that(not perla.esDestacada() 	and perla.potencia().equals(44) 	and perla.inteligencia().equals(12)	)
+	assert.that(monica.esDestacada() 		and monica.potencia().equals(20) 	and monica.inteligencia().equals(20))
+	assert.that(not luisa.esDestacada()		and luisa.potencia().equals(20) 	and luisa.inteligencia().equals(14)	)
+	
+	const triton 	= new Planeta()
+	triton.habitantesDelPlaneta().addAll([julieta,ana,rosa,perla,monica,luisa])
+	
+	assert.equals([ana,rosa,monica],triton.delegacionDiplomatica())
+	assert.equals(2,triton.valorInicialDefensa())
+	assert.notThat(triton.esCulto())
+	assert.equals(184,triton.potenciaReal())
+}
+
+test "Perla"{
+	const perla = new Atleta(edad=28,tecnicasAprendidas=4,masaMuscular=6)
+	perla.entrenar(15)
+	perla.aprenderUnaTecnica()
+	assert.that(not perla.esDestacada() and perla.potencia().equals(65))
+	perla.aprenderUnaTecnica()
+	assert.that(perla.esDestacada())
+}
+
+
+test "PlanetaParte2"{
+	const triton 	= new Planeta()
+	const paleas 	= new Planeta()
+	const julieta 	= new Habitante(edad=42)
+	const rosa 		= new Atleta(edad=45,tecnicasAprendidas=8)
+	const perla 	= new Soldado(edad=28)
+	const monica 	= new Docente(edad=45,cursosImpartidos=6)
+
+	paleas.fundarUnMuseo()
+	paleas.construirMuralla(10)
+	triton.fundarUnMuseo()
+	triton.construirMuralla(10)
+	triton.habitantesDelPlaneta().addAll([julieta,rosa,perla,monica])
+	assert.that(triton.cantidadDeMuseos().equals(1) and paleas.longitudMurallaKm().equals(10))
+	assert.equals(208,triton.potenciaAparente())
+	assert.notThat(triton.necesitaReforzar())
+	triton.rendirTributos()
+	assert.that(triton.cantidadDeMuseos().equals(2) and triton.longitudMurallaKm().equals(12))
+	assert.equals(28,julieta.valor())
+	assert.equals(60,rosa.valor())
+	assert.equals(56,perla.valor())
+	assert.equals(45,monica.valor())
+	assert.equals([rosa,perla,monica],triton.habitantesValiosos())
+	triton.apaciguarA(paleas)
+	assert.that(paleas.cantidadDeMuseos().equals(2) and paleas.longitudMurallaKm().equals(12))
+	
+	perla.armas().addAll([new Espadon(pesoEnKg=10),new Pistolete(largoEnCm=30)])
+	assert.equals(109,perla.potencia())
+	
+}
